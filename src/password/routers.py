@@ -1,13 +1,16 @@
 from fastapi import APIRouter
-from typing import Optional, Annotated
+from typing import Optional, Annotated, List
 import random
+
+from pydantic import BaseModel
 
 router = APIRouter(prefix='/pass', tags=['PASSWORD'])
 
 
+
 @router.get('/password')
-async def password(length: int = 7, uppercase_chars: Optional[bool] = False, digits: Optional[bool] = None,
-                   special_chars: Optional[bool] = None, hard_mode: Optional[bool] = None):
+async def password(length: int = 7, uppercase_chars: Optional[bool] = False, digits: Optional[bool] = False,
+                   special_chars: Optional[bool] = False, hard_mode: Optional[bool] = False):
     generated_password_1 = ''
     generated_password_2 = ''
     generated_password_3 = ''

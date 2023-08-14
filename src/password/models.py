@@ -1,6 +1,7 @@
 from sqlalchemy import MetaData, Boolean, String, Column, Integer, Table
 
-# from src.password.connect import Base
+from src.password.database import Base
+
 metadata = MetaData()
 
 password = Table(
@@ -18,7 +19,7 @@ password = Table(
 
 
 
-#
+
 # class Password(Base):
 #     __tablename__ = 'Password'
 #
@@ -29,5 +30,5 @@ password = Table(
 #     digits = Column(Boolean, default=False)
 #     special_chars = Column(Boolean, default=False)
 #     hard_mode = Column(Boolean, default=False)
-#
-#
+
+

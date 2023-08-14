@@ -4,7 +4,7 @@ import random
 
 from pydantic import BaseModel
 
-router = APIRouter(prefix='/pass', tags=['PASSWORD'])
+router = APIRouter(prefix='/pass')
 
 
 
@@ -37,3 +37,6 @@ async def password(length: int = 7, uppercase_chars: Optional[bool] = False, dig
             'Your pass_3 is ready': generated_password_3,
             'Your pass_4 is ready': generated_password_4,
             'Your pass_5 is ready': generated_password_5}
+
+@router.post('/own-password')
+async def insert_own_pass_to_db(pass: Password):

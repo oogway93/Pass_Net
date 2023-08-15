@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Optional, Annotated
 import random
-from src.password.models import Password as passwordmodel
+from src.password.models import Password
 
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database import get_async_session
-from src.password.schemas import Password
+from src.password.schemas import Password as PasswordSchema
 
 router = APIRouter(prefix='/pass')
 
@@ -48,16 +48,16 @@ async def generate_five_random_passwords(length: Annotated[int, Query(ge=4)] = 7
 @router.get("")
 async def get_a_list_of_pass_from_db(id: int, session: AsyncSession = Depends(get_async_session)):
     try:
-        query = select(passwordmodel).where(passwordmodel.c.id == id)
-        res = await session.execute(query)
-        return {"status": "success", "data": res.mappings().first(), "details": None}
+        query = select(Password).where(Password.id == id)
+        result = await session.execute(query)
+        return {"status": "success", "data": result.mappings().first(), "details": None}
     except Exception:
         raise HTTPException(status_code=500, detail={"status": "error", "data": None, "details": None})
 
 
 @router.post("")
-async def insert_my_pass_to_db(pas: Password, session: AsyncSession = Depends(get_async_session)):
-    stmt = insert(passwordmodel).values(**pas.dict())
+async def insert_my_pass_to_db(pas: PasswordSchema, session: AsyncSession = Depends(get_async_session)):
+    stmt = insert(Password).values(**pas.dict())
     await session.execute(stmt)
     await session.commit()
     return {"status": "201 success"}

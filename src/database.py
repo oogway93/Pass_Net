@@ -1,6 +1,7 @@
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, AsyncSession
+from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import sessionmaker
 
@@ -9,6 +10,8 @@ from config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 Base: DeclarativeMeta = declarative_base()
+
+metadata = MetaData()
 
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = sessionmaker(engine, class_=AsyncSession)

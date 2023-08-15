@@ -1,20 +1,20 @@
-from fastapi import APIRouter, Depends
-from typing import Optional, Annotated, List
+from fastapi import APIRouter, Depends, HTTPException, Query
+from typing import Optional, Annotated
 import random
-from src.password.models import password as passwordmodel
+from src.password.models import Password as passwordmodel
 
-from pydantic import BaseModel
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.password.database import get_async_session
+from src.database import get_async_session
 from src.password.schemas import Password
 
 router = APIRouter(prefix='/pass')
 
 
 @router.get('/random_passwords')
-async def generate_five_random_passwords(length: int = 7, uppercase_chars: Optional[bool] = False,
+async def generate_five_random_passwords(length: Annotated[int, Query(ge=4)] = 7,
+                                         uppercase_chars: Optional[bool] = False,
                                          digits: Optional[bool] = False,
                                          special_chars: Optional[bool] = False, hard_mode: Optional[bool] = False):
     generated_password_1 = ""
@@ -30,7 +30,7 @@ async def generate_five_random_passwords(length: int = 7, uppercase_chars: Optio
     if special_chars:
         initial.extend((list("!@#$%^&*")))
     if hard_mode:
-        initial.extend(list("~()_-+={[}]|\:;><.?/"))
+        initial.extend(list(r"~()_-+={[}]|\:;><.?/"))
     for i in range(length):
         generated_password_1 += random.choice(initial)
         generated_password_2 += random.choice(initial)
@@ -47,9 +47,12 @@ async def generate_five_random_passwords(length: int = 7, uppercase_chars: Optio
 
 @router.get("")
 async def get_a_list_of_pass_from_db(id: int, session: AsyncSession = Depends(get_async_session)):
-    query = select(passwordmodel).where(passwordmodel.c.id == id)
-    res = await session.execute(query)
-    return res.mappings().first()
+    try:
+        query = select(passwordmodel).where(passwordmodel.c.id == id)
+        res = await session.execute(query)
+        return {"status": "success", "data": res.mappings().first(), "details": None}
+    except Exception:
+        raise HTTPException(status_code=500, detail={"status": "error", "data": None, "details": None})
 
 
 @router.post("")

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 import random
 import string
 import hashlib
@@ -13,11 +13,11 @@ router = APIRouter(prefix="/key")
 async def generate_hash_key(bytes: int = 16):
     random_string = secrets.token_hex(bytes)
     hash_key = hashlib.sha256(random_string.encode()).hexdigest()
-    return {"hash key": hash_key, "info": f"A length of string depends on bytes. For example: 10 bytes = 20 symbols"}
+    return {"hash key": hash_key, "info": "A length of string depends on bytes. For example: 10 bytes = 20 symbols"}
 
 
 @router.get("")
-async def create_secret_keys_for_some_platforms(git: Optional[bool] = False, django: Optional[bool] = False):
+async def create_secret_keys_and_tokens_for_some_platforms(git: Optional[bool] = False, django: Optional[bool] = False):
     if git:
         random_string = ''.join(random.choice(string.digits + string.ascii_letters) for i in range(36))
         return {"git token": f"ghp_{random_string}"}

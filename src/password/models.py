@@ -1,6 +1,6 @@
-from sqlalchemy import String, Column, Integer, Table
+from sqlalchemy import String, Column, Integer
 
-from src.database import metadata, Base
+from src.database import Base
 
 
 class Password(Base):

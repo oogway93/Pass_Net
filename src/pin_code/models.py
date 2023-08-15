@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Table
+from sqlalchemy import Column, Integer
 
-from src.database import Base, metadata
+from src.database import Base
 
 
 class PinCode(Base):

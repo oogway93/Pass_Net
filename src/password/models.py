@@ -8,12 +8,7 @@ password = Table(
     "Password",
     metadata,
     Column("id", Integer, primary_key=True, nullable=False),
-    Column("password", String, nullable=False),
-    Column("length", Integer, nullable=False),
-    Column("uppercase_chars", Boolean, default=False),
-    Column("digits", Boolean, default=False),
-    Column("special_chars", Boolean, default=False),
-    Column("hard_mode", Boolean, default=False),
+    Column("password", String),
 )
 
 

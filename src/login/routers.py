@@ -32,3 +32,6 @@ async def generate_random_login(length: int = 8, fluent_log: Optional[bool] = No
     else:
         raise HTTPException(status_code=500, detail={"status": "error", "data": None,
                                                      "detail": "Length must be between 8 and 20."})
+
+
+

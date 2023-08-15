@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Optional, Annotated
 import random
+import re
 from src.password.models import Password
 
 from sqlalchemy import insert, select
@@ -57,7 +58,34 @@ async def get_a_list_of_pass_from_db(id: int, session: AsyncSession = Depends(ge
 
 @router.post("")
 async def insert_my_pass_to_db(pas: PasswordSchema, session: AsyncSession = Depends(get_async_session)):
-    stmt = insert(Password).values(**pas.dict())
-    await session.execute(stmt)
-    await session.commit()
-    return {"status": "201 success"}
+    flag = True
+    while True:
+        if len(pas.password) <= 8:
+            flag = False
+            break
+        elif not re.search("[a-z]", pas.password):
+            flag = False
+            break
+        elif not re.search("[A-Z]", pas.password):
+            flag = False
+            break
+        elif not re.search("[0-9]", pas.password):
+            flag = False
+            break
+        elif re.search("\s", pas.password):
+            flag = False
+            break
+        else:
+            flag = True
+            break
+
+    if flag:
+        stmt = insert(Password).values(**pas.dict())
+        await session.execute(stmt)
+        await session.commit()
+        return {"status": "201 success"}
+    else:
+        raise HTTPException(status_code=500, detail={"status": "error", "data": None,
+                                                     "detail": "The password must contain lowercase chars(a-z), "
+                                                               "uppercase chars(A - Z), digits(0 - 9) and be without "
+                                                               "symbols: 'tabulation', 'space', 'new line' and etc."})

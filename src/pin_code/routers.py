@@ -32,9 +32,14 @@ async def get_saved_pin_codes_from_db_by_id(id: int, session: AsyncSession = Dep
 
 
 @router.post("")
-async def insert_pin_code_to_db(pin: Pin_code,
+async def insert_pin_code_to_db(pins: Pin_code,
                                 session: AsyncSession = Depends(get_async_session)):
-    stmt = insert(PinCode).values(**pin.dict())
-    await session.execute(stmt)
-    await session.commit()
-    return {"status": "201 created"}
+    if len(str(pins.pin)) == 4 or len(str(pins.pin)) == 6 and isinstance(pins.pin, int):
+        stmt = insert(PinCode).values(**pins.dict())
+        await session.execute(stmt)
+        await session.commit()
+        return {"status": "201 created"}
+    else:
+        raise HTTPException(status_code=500, detail={"status": "error", "data": None,
+                                                     "detail": 'The pin-code must be 4 or 6 characters long and also '
+                                                               'int.'})

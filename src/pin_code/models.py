@@ -7,4 +7,4 @@ class PinCode(Base):
     __tablename__ = "Pin-Code"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    pin = Column(String, nullable=False)
+    pin = Column(Integer, nullable=False)

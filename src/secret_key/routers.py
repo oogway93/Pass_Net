@@ -25,3 +25,9 @@ async def create_secret_keys_and_tokens_for_some_platforms(git: Optional[bool] =
         allowed_chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         random_string = ''.join(random.choice(allowed_chars) for i in range(50))
         return {"django's secret key": f"django-insecure-{random_string}"}
+
+
+@router.get("/personal_key")
+async def create_personal_key_for_different_situations():
+    key = ''.join(random.choice(string.digits + string.ascii_letters) for i in range(20))
+    return {"personal key": key}

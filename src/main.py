@@ -10,9 +10,11 @@ from src.login.routers import router as LoginRouter
 from src.secret_key.routers import router as SecretKeyRouter
 from src.operation.routers import router as OperationRouter
 from src.tasks.routers import router as EmailRouter
+from src.routers import router as MainPageRouter
 
 app = FastAPI()
 
+app.include_router(MainPageRouter, tags=['Main Page'])
 app.include_router(PasswordRouter, tags=['Password'])
 app.include_router(PinCodeRouter, tags=['Pin-Code'])
 app.include_router(LoginRouter, tags=['Login'])

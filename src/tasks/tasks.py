@@ -15,7 +15,7 @@ def get_email_tamplate_greetings(username: str):
     email = EmailMessage()
     email['Subject'] = 'Thanks for your feedback'
     email['From'] = SMTP_USER
-    email['To'] = SMTP_USER
+    email['To'] = SMTP_USER  # you can choose another one email address
 
     email.set_content(
         "<div>"

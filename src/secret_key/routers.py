@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import random
 import string
 import hashlib
@@ -18,13 +18,18 @@ async def generate_hash_key(bytes: int = 16):
 
 @router.get("")
 async def create_secret_keys_and_tokens_for_some_platforms(git: Optional[bool] = False, django: Optional[bool] = False):
-    if git:
-        random_string = ''.join(random.choice(string.digits + string.ascii_letters) for i in range(36))
-        return {"git token": f"ghp_{random_string}"}
-    if django:
-        allowed_chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-        random_string = ''.join(random.choice(allowed_chars) for i in range(50))
-        return {"django's secret key": f"django-insecure-{random_string}"}
+    allowed_chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+    git_random_string = ''.join(random.choice(string.digits + string.ascii_letters) for i in range(36))
+    dj_random_string = ''.join(random.choice(allowed_chars) for i in range(50))
+    if django and git:
+        return {"git token": f"ghp_{git_random_string}", "django's secret key": f"django-insecure-{dj_random_string}"}
+    elif git:
+        return {"git token": f"ghp_{git_random_string}"}
+    elif django:
+        return {"django's secret key": f"django-insecure-{dj_random_string}"}
+    else:
+        raise HTTPException(status_code=500, detail={"status": "error", "data": None,
+                                                     "detail": "Choose git or django key"})
 
 
 @router.get("/personal_key")

@@ -18,7 +18,14 @@ def get_email_tamplate_greetings(username: str):
     email['From'] = SMTP_USER
     email['To'] = SMTP_USER
 
-    email.set_content(f'<h1>Thank, {username}!</h1>', subtype='html')
+    email.set_content(
+        "<div>"
+        f'<h1 style="color: red;">Hello, {username}! Thanks for your visit to our site 😊</h1>'
+        '<img src="https://static.vecteezy.com/system/resources/previews/008/295/031/original/custom-relationship'
+        "-management-dashboard-ui-design-template-suitable-designing-application-for-android-and-ios-clean-style-app"
+        '-mobile-free-vector.jpg" width="600">'
+        "</div>",
+        subtype='html')
 
     return email
 

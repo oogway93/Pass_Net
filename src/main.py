@@ -15,12 +15,12 @@ from src.routers import router as MainPageRouter
 app = FastAPI()
 
 app.include_router(MainPageRouter, tags=['Main Page'])
+app.include_router(EmailRouter, tags=['Email'])
+app.include_router(LoginRouter, tags=['Login'])
 app.include_router(PasswordRouter, tags=['Password'])
 app.include_router(PinCodeRouter, tags=['Pin-Code'])
-app.include_router(LoginRouter, tags=['Login'])
 app.include_router(SecretKeyRouter, tags=['Secret Key'])
 app.include_router(OperationRouter, tags=['Operation'])
-app.include_router(EmailRouter, tags=['Email'])
 
 
 @app.on_event(event_type="startup")

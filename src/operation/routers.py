@@ -10,4 +10,4 @@ router = APIRouter(prefix="/operation")
 @cache(expire=30)
 def get_long_op():
     time.sleep(2)
-    return "Too long..."
+    return {"msg": "Too long...", "details": "check redis"}

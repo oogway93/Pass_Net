@@ -41,5 +41,5 @@ async def insert_pin_code_to_db(pins: Pin_code,
         return {"status": "201 created"}
     else:
         raise HTTPException(status_code=500, detail={"status": "error", "data": None,
-                                                     "detail": 'The pin-code must be 4 or 6 characters long and also '
-                                                               'int.'})
+                                                     "details": 'The pin-code must be 4 or 6 characters long and also '
+                                                                'int.'})

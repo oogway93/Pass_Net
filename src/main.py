@@ -8,7 +8,8 @@ from src.password.routers import router as PasswordRouter
 from src.pin_code.routers import router as PinCodeRouter
 from src.login.routers import router as LoginRouter
 from src.secret_key.routers import router as SecretKeyRouter
-from src.operation.routers import route as OperationRouter
+from src.operation.routers import router as OperationRouter
+from src.tasks.routers import router as EmailRouter
 
 app = FastAPI()
 
@@ -17,6 +18,7 @@ app.include_router(PinCodeRouter, tags=['Pin-Code'])
 app.include_router(LoginRouter, tags=['Login'])
 app.include_router(SecretKeyRouter, tags=['Secret Key'])
 app.include_router(OperationRouter, tags=['Operation'])
+app.include_router(EmailRouter, tags=['Email'])
 
 
 @app.on_event(event_type="startup")

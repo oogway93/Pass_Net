@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 .dockerignore
 migrations/versions/be07588c329e_some_corrects.py
+commands.txt

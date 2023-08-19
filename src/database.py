@@ -1,7 +1,8 @@
 from typing import AsyncGenerator
 
+
 from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.orm import sessionmaker
 
@@ -14,12 +15,10 @@ Base: DeclarativeMeta = declarative_base()
 metadata = MetaData()
 
 engine = create_async_engine(DATABASE_URL)
-async_session_maker = sessionmaker(engine, class_=AsyncSession)
+async_session_maker: AsyncEngine = sessionmaker(engine, class_=AsyncSession)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """A function, which get asyncio session"""
     async with async_session_maker() as session:
         yield session
-
-
-

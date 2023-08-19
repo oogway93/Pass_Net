@@ -8,7 +8,7 @@ router = APIRouter(prefix="/login")
 
 
 @router.get("/random_login")
-async def generate_random_login(length: int = 8, fluent_log: Optional[bool] = False, nickname: str = None):
+async def generate_random_login(length: int = 8, fluent_log: bool | None = False, nickname: str | None = None):
     if 8 <= length <= 20:
         additions = ['cool', 'awesome', 'master', 'ninja', 'pro', 'gamer', 'hacker', 'star', 'legend', 'expert',
                      'junior', 'profi', 'senior', 'middle', 'sniper', 'pudge', 'lol', 'wow', 'lil']
